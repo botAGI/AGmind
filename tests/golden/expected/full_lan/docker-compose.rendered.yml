@@ -366,6 +366,7 @@ services:
         published: "8888"
         protocol: tcp
       - mode: ingress
+        host_ip: 127.0.0.1
         target: 11235
         published: "11235"
         protocol: tcp
