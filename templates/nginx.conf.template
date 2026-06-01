@@ -385,7 +385,23 @@ http {
     #__CRAWL4AI__
     #__CRAWL4AI__    client_max_body_size 10M;
     #__CRAWL4AI__
+    #__CRAWL4AI__    # Authelia auth_request endpoint for this dedicated port vhost.
+    #__CRAWL4AI__    #__AUTHELIA__location = /authelia-auth {
+    #__CRAWL4AI__    #__AUTHELIA__    internal;
+    #__CRAWL4AI__    #__AUTHELIA__    set $u_authelia http://authelia:9091;
+    #__CRAWL4AI__    #__AUTHELIA__    proxy_pass $u_authelia/api/authz/auth-request;
+    #__CRAWL4AI__    #__AUTHELIA__    proxy_pass_request_body off;
+    #__CRAWL4AI__    #__AUTHELIA__    proxy_set_header Content-Length "";
+    #__CRAWL4AI__    #__AUTHELIA__    proxy_set_header X-Original-Method $request_method;
+    #__CRAWL4AI__    #__AUTHELIA__    proxy_set_header X-Original-URL $scheme://$http_host$request_uri;
+    #__CRAWL4AI__    #__AUTHELIA__    proxy_set_header X-Forwarded-For $remote_addr;
+    #__CRAWL4AI__    #__AUTHELIA__    proxy_set_header X-Forwarded-Proto $scheme;
+    #__CRAWL4AI__    #__AUTHELIA__}
+    #__CRAWL4AI__
     #__CRAWL4AI__    location / {
+    #__CRAWL4AI__        #__AUTHELIA__auth_request /authelia-auth;
+    #__CRAWL4AI__        #__AUTHELIA__auth_request_set $user $upstream_http_remote_user;
+    #__CRAWL4AI__        #__AUTHELIA__auth_request_set $groups $upstream_http_remote_groups;
     #__CRAWL4AI__        set $u_crawl4ai http://crawl4ai:11235;
     #__CRAWL4AI__        proxy_pass $u_crawl4ai;
     #__CRAWL4AI__        proxy_http_version 1.1;
@@ -545,8 +561,24 @@ http {
     #__CRAWL4AI__
     #__CRAWL4AI__    client_max_body_size 10M;
     #__CRAWL4AI__
+    #__CRAWL4AI__    # Authelia auth_request endpoint for this mDNS vhost.
+    #__CRAWL4AI__    #__AUTHELIA__location = /authelia-auth {
+    #__CRAWL4AI__    #__AUTHELIA__    internal;
+    #__CRAWL4AI__    #__AUTHELIA__    set $u_authelia http://authelia:9091;
+    #__CRAWL4AI__    #__AUTHELIA__    proxy_pass $u_authelia/api/authz/auth-request;
+    #__CRAWL4AI__    #__AUTHELIA__    proxy_pass_request_body off;
+    #__CRAWL4AI__    #__AUTHELIA__    proxy_set_header Content-Length "";
+    #__CRAWL4AI__    #__AUTHELIA__    proxy_set_header X-Original-Method $request_method;
+    #__CRAWL4AI__    #__AUTHELIA__    proxy_set_header X-Original-URL $scheme://$http_host$request_uri;
+    #__CRAWL4AI__    #__AUTHELIA__    proxy_set_header X-Forwarded-For $remote_addr;
+    #__CRAWL4AI__    #__AUTHELIA__    proxy_set_header X-Forwarded-Proto $scheme;
+    #__CRAWL4AI__    #__AUTHELIA__}
+    #__CRAWL4AI__
     #__CRAWL4AI__    # --- Health endpoint (shared JSON, see phase 36) ---
     #__CRAWL4AI__    location = /health {
+    #__CRAWL4AI__        #__AUTHELIA__auth_request /authelia-auth;
+    #__CRAWL4AI__        #__AUTHELIA__auth_request_set $user $upstream_http_remote_user;
+    #__CRAWL4AI__        #__AUTHELIA__auth_request_set $groups $upstream_http_remote_groups;
     #__CRAWL4AI__        default_type application/json;
     #__CRAWL4AI__        add_header Cache-Control "no-cache, no-store, must-revalidate" always;
     #__CRAWL4AI__        add_header X-Content-Type-Options "nosniff" always;
@@ -555,6 +587,9 @@ http {
     #__CRAWL4AI__    }
     #__CRAWL4AI__
     #__CRAWL4AI__    location / {
+    #__CRAWL4AI__        #__AUTHELIA__auth_request /authelia-auth;
+    #__CRAWL4AI__        #__AUTHELIA__auth_request_set $user $upstream_http_remote_user;
+    #__CRAWL4AI__        #__AUTHELIA__auth_request_set $groups $upstream_http_remote_groups;
     #__CRAWL4AI__        set $u_crawl4ai http://crawl4ai:11235;
     #__CRAWL4AI__        proxy_pass $u_crawl4ai;
     #__CRAWL4AI__        proxy_http_version 1.1;

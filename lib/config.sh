@@ -877,7 +877,10 @@ generate_nginx_config() {
     fi
 
     # Crawl4AI markers
-    if [[ "${ENABLE_CRAWL4AI:-false}" == "true" ]]; then
+    # Security: the Crawl4AI REST API accepts arbitrary crawl URLs and can be
+    # abused as an SSRF primitive. Only expose it through nginx when Authelia is
+    # active; otherwise keep the backend reachable solely on the Docker network.
+    if [[ "${ENABLE_CRAWL4AI:-false}" == "true" && "${ENABLE_AUTHELIA:-false}" == "true" ]]; then
         _atomic_sed "$nginx_conf" 's|#__CRAWL4AI__||g'
     else
         _atomic_sed "$nginx_conf" '/#__CRAWL4AI__/d'
