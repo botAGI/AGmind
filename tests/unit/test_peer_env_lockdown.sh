@@ -69,12 +69,16 @@ else
 fi
 
 # ----------------------------------------------------------------------------
-# Test 4: shellcheck still clean when the optional tool is available.
-# The dedicated ShellCheck CI job installs shellcheck and covers this globally;
-# unit-test jobs do not install it, so absence here must not fail the suite.
+# Test 4: shellcheck is owned by the dedicated ShellCheck CI job. Do not run it
+# in unit-test jobs: runner images differ (some have shellcheck preinstalled,
+# some do not), which made this unit test non-hermetic on amd64/arm64.
+# Developers can opt in locally with AGMIND_UNIT_RUN_SHELLCHECK=1.
 # ----------------------------------------------------------------------------
-if command -v shellcheck >/dev/null 2>&1; then
-    if shellcheck -S warning "$PEER_SH" >/dev/null 2>&1; then
+if [[ "${AGMIND_UNIT_RUN_SHELLCHECK:-0}" == "1" ]]; then
+    if ! command -v shellcheck >/dev/null 2>&1; then
+        fail=$((fail + 1))
+        echo "  [FAIL] AGMIND_UNIT_RUN_SHELLCHECK=1 but shellcheck is not installed"
+    elif shellcheck -S warning "$PEER_SH" >/dev/null 2>&1; then
         pass=$((pass + 1))
         echo "  [PASS] shellcheck -S warning clean"
     else
@@ -82,7 +86,7 @@ if command -v shellcheck >/dev/null 2>&1; then
         echo "  [FAIL] shellcheck failed for lib/peer.sh"
     fi
 else
-    echo "  [SKIP] shellcheck not installed — covered by dedicated ShellCheck CI job"
+    echo "  [SKIP] shellcheck is covered by dedicated ShellCheck CI job"
 fi
 
 echo ""
