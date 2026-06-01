@@ -877,7 +877,10 @@ generate_nginx_config() {
     fi
 
     # Crawl4AI markers
-    if [[ "${ENABLE_CRAWL4AI:-false}" == "true" ]]; then
+    # Security: the Crawl4AI REST API accepts arbitrary crawl URLs and can be
+    # abused as an SSRF primitive. Only expose it through nginx when Authelia is
+    # active; otherwise keep the backend reachable solely on the Docker network.
+    if [[ "${ENABLE_CRAWL4AI:-false}" == "true" && "${ENABLE_AUTHELIA:-false}" == "true" ]]; then
         _atomic_sed "$nginx_conf" 's|#__CRAWL4AI__||g'
     else
         _atomic_sed "$nginx_conf" '/#__CRAWL4AI__/d'
@@ -959,7 +962,7 @@ _register_local_dns() {
     [[ "${ENABLE_DBGPT:-false}" == "true" ]] && names+=("agmind-dbgpt")
     [[ "${ENABLE_NOTEBOOK:-false}" == "true" ]] && names+=("agmind-notebook")
     [[ "${ENABLE_SEARXNG:-false}" == "true" ]] && names+=("agmind-search")
-    [[ "${ENABLE_CRAWL4AI:-false}" == "true" ]] && names+=("agmind-crawl")
+    [[ "${ENABLE_CRAWL4AI:-false}" == "true" && "${ENABLE_AUTHELIA:-false}" == "true" ]] && names+=("agmind-crawl")
     [[ "${ENABLE_RAGFLOW:-false}" == "true" ]] && names+=("agmind-rag")
     [[ "${ENABLE_N8N:-false}" == "true" ]] && names+=("agmind-n8n")
 

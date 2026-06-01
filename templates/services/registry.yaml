@@ -408,7 +408,7 @@ profile_expansions:
   ragflow: "minio"
   observability: "monitoring,portainer"
   security: "authelia"
-  agents: "litellm,crawl4ai,searxng,dbgpt,openwebui,notebook,n8n"
+  agents: "litellm,authelia,crawl4ai,searxng,dbgpt,openwebui,notebook,n8n"
   full: "vllm,litellm,weaviate,docling,vllm-embed,vllm-rerank,minio,monitoring,portainer,authelia,crawl4ai,searxng,dbgpt,openwebui,notebook,n8n"
   dev: "vllm,litellm,weaviate,docling,monitoring,portainer"
 
@@ -420,7 +420,7 @@ profile_descriptions:
   ragflow: "RAGFlow + Elasticsearch + MySQL + MinIO"
   observability: "Prometheus + Grafana + Loki + exporters + Portainer"
   security: "Authelia + fail2ban/hardening"
-  agents: "LiteLLM + Crawl4AI + SearXNG + dbGPT + Open WebUI + Notebook + n8n"
+  agents: "LiteLLM + Authelia + Crawl4AI + SearXNG + dbGPT + Open WebUI + Notebook + n8n"
   full: "Everything: vLLM + Weaviate + Docling + monitoring + agents + n8n (Milvus skipped — XOR with Weaviate)"
   dev: "Core + observability (fast iteration; no RAGFlow/agents/security)"
 
@@ -433,7 +433,7 @@ profile_implied:
   ragflow: "ENABLE_RAGFLOW=true ENABLE_MINIO=true"
   observability: "MONITORING_MODE=local ENABLE_PORTAINER=true"
   security: "ENABLE_AUTHELIA=true"
-  agents: "ENABLE_LITELLM=true ENABLE_CRAWL4AI=true ENABLE_SEARXNG=true ENABLE_DBGPT=true ENABLE_OPENWEBUI=true ENABLE_NOTEBOOK=true ENABLE_N8N=true"
+  agents: "ENABLE_LITELLM=true ENABLE_AUTHELIA=true ENABLE_CRAWL4AI=true ENABLE_SEARXNG=true ENABLE_DBGPT=true ENABLE_OPENWEBUI=true ENABLE_NOTEBOOK=true ENABLE_N8N=true"
   full: "LLM_PROVIDER=vllm ENABLE_LITELLM=true VECTOR_STORE=weaviate ENABLE_DOCLING=true EMBED_PROVIDER=vllm-embed ENABLE_RERANKER=true RERANKER_PROVIDER=vllm-rerank ENABLE_MINIO=true MONITORING_MODE=local ENABLE_PORTAINER=true ENABLE_AUTHELIA=true ENABLE_CRAWL4AI=true ENABLE_SEARXNG=true ENABLE_DBGPT=true ENABLE_OPENWEBUI=true ENABLE_NOTEBOOK=true ENABLE_N8N=true"
   dev: "LLM_PROVIDER=vllm ENABLE_LITELLM=true VECTOR_STORE=weaviate ENABLE_DOCLING=true MONITORING_MODE=local ENABLE_PORTAINER=true"
 

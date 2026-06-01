@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # _registry.indexed.sh — DO NOT HAND-EDIT
 # Generated from templates/services/registry.yaml (schema_version=1)
-# Source SHA-12: 2557f030b18c
+# Source SHA-12: 1a5c2e79d8c2
 # Regenerate via: make registry-codegen
 # CI gate: tests/integration/test_registry_codegen_drift.sh fails on stale artifact.
 #
@@ -161,7 +161,7 @@ ALL_COMPOSE_PROFILES="monitoring,portainer,qdrant,weaviate,milvus,authelia,ollam
 
 # shellcheck disable=SC2034
 declare -A NAMED_PROFILE_EXPANSION=(
-    [agents]="litellm,crawl4ai,searxng,dbgpt,openwebui,notebook,n8n"
+    [agents]="litellm,authelia,crawl4ai,searxng,dbgpt,openwebui,notebook,n8n"
     [core]="vllm,litellm"
     [dev]="vllm,litellm,weaviate,docling,monitoring,portainer"
     [full]="vllm,litellm,weaviate,docling,vllm-embed,vllm-rerank,minio,monitoring,portainer,authelia,crawl4ai,searxng,dbgpt,openwebui,notebook,n8n"
@@ -173,7 +173,7 @@ declare -A NAMED_PROFILE_EXPANSION=(
 
 # shellcheck disable=SC2034
 declare -A NAMED_PROFILE_DESC=(
-    [agents]="LiteLLM + Crawl4AI + SearXNG + dbGPT + Open WebUI + Notebook + n8n"
+    [agents]="LiteLLM + Authelia + Crawl4AI + SearXNG + dbGPT + Open WebUI + Notebook + n8n"
     [core]="Dify core + vLLM + LiteLLM (minimal — no RAG)"
     [dev]="Core + observability (fast iteration; no RAGFlow/agents/security)"
     [full]="Everything: vLLM + Weaviate + Docling + monitoring + agents + n8n (Milvus skipped — XOR with Weaviate)"
@@ -185,7 +185,7 @@ declare -A NAMED_PROFILE_DESC=(
 
 # shellcheck disable=SC2034
 declare -A NAMED_PROFILE_IMPLIED=(
-    [agents]="ENABLE_LITELLM=true ENABLE_CRAWL4AI=true ENABLE_SEARXNG=true ENABLE_DBGPT=true ENABLE_OPENWEBUI=true ENABLE_NOTEBOOK=true ENABLE_N8N=true"
+    [agents]="ENABLE_LITELLM=true ENABLE_AUTHELIA=true ENABLE_CRAWL4AI=true ENABLE_SEARXNG=true ENABLE_DBGPT=true ENABLE_OPENWEBUI=true ENABLE_NOTEBOOK=true ENABLE_N8N=true"
     [core]="LLM_PROVIDER=vllm ENABLE_LITELLM=true"
     [dev]="LLM_PROVIDER=vllm ENABLE_LITELLM=true VECTOR_STORE=weaviate ENABLE_DOCLING=true MONITORING_MODE=local ENABLE_PORTAINER=true"
     [full]="LLM_PROVIDER=vllm ENABLE_LITELLM=true VECTOR_STORE=weaviate ENABLE_DOCLING=true EMBED_PROVIDER=vllm-embed ENABLE_RERANKER=true RERANKER_PROVIDER=vllm-rerank ENABLE_MINIO=true MONITORING_MODE=local ENABLE_PORTAINER=true ENABLE_AUTHELIA=true ENABLE_CRAWL4AI=true ENABLE_SEARXNG=true ENABLE_DBGPT=true ENABLE_OPENWEBUI=true ENABLE_NOTEBOOK=true ENABLE_N8N=true"
