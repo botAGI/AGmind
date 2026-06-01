@@ -69,14 +69,20 @@ else
 fi
 
 # ----------------------------------------------------------------------------
-# Test 4: shellcheck still clean
+# Test 4: shellcheck still clean when the optional tool is available.
+# The dedicated ShellCheck CI job installs shellcheck and covers this globally;
+# unit-test jobs do not install it, so absence here must not fail the suite.
 # ----------------------------------------------------------------------------
-if shellcheck -S warning "$PEER_SH" >/dev/null 2>&1; then
-    pass=$((pass + 1))
-    echo "  [PASS] shellcheck -S warning clean"
+if command -v shellcheck >/dev/null 2>&1; then
+    if shellcheck -S warning "$PEER_SH" >/dev/null 2>&1; then
+        pass=$((pass + 1))
+        echo "  [PASS] shellcheck -S warning clean"
+    else
+        fail=$((fail + 1))
+        echo "  [FAIL] shellcheck failed for lib/peer.sh"
+    fi
 else
-    fail=$((fail + 1))
-    echo "  [FAIL] shellcheck failed for lib/peer.sh"
+    echo "  [SKIP] shellcheck not installed — covered by dedicated ShellCheck CI job"
 fi
 
 echo ""
