@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Minimal ripgrep-compatible shim for hermetic unit-test runners.
+# Prefer a real rg when the runner provides one; otherwise fall back to GNU grep
+# with PCRE so rg-style \s patterns used by shell tests still work.
+set -euo pipefail
+
+if [[ -x /usr/bin/rg ]]; then
+    exec /usr/bin/rg "$@"
+fi
+if command -v rg >/dev/null 2>&1; then
+    _rg_path="$(command -v rg)"
+    if [[ "$_rg_path" != "$0" ]]; then
+        exec "$_rg_path" "$@"
+    fi
+fi
+
+exec grep -P "$@"
