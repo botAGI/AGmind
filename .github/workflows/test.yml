@@ -66,10 +66,6 @@ jobs:
         with:
           egress-policy: audit
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      - name: Install unit-test tools
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends shellcheck
       - name: Run unit tests
         # default GHA shell is `bash -e {0}` (set -e on) — a test exiting 77 (SKIP)
         # would kill the whole step before our case handler runs. Disable -e.
@@ -110,10 +106,6 @@ jobs:
         with:
           egress-policy: audit
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      - name: Install unit-test tools (arm64)
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends shellcheck
       - name: Run unit tests (arm64)
         shell: bash --noprofile --norc {0}
         run: |
