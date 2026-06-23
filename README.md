@@ -623,7 +623,14 @@ Docling (5-page arxiv PDF, warm): **6.04s**, 0.32s/page, ~1.6 GiB GPU memory.
 
 ## 🗺 Roadmap & Status
 
-- **v3.1.1** _(current)_ — release housekeeping: version strings synced `v3.0.2` → `v3.1.1`
+- **v3.2.0** _(current)_ — architecture release, infrastructure-only (zero new images, zero new
+  daemons): versioned state store (`/var/lib/agmind/state/`), declarative service registry
+  (`templates/services/registry.yaml`) with build-time codegen, byte-exact golden tests
+  (`tests/golden/`), and namespace-reserving Go scaffolding. Closes the v3.2.0 milestone
+  (58 REQ-IDs across 7 phases). See [CHANGELOG](CHANGELOG.md).
+- **v3.1.2** — hotfix release: 9 critical/high-severity findings, each shipped behind a
+  regression test in `tests/unit/`.
+- **v3.1.1** — release housekeeping: version strings synced `v3.0.2` → `v3.1.1`
   (`RELEASE` / `install.sh` `VERSION` / `templates/release-manifest.json`), `versions.env`
   header refreshed; ADR `Status: Accepted` lines confirmed; manifest digest regen → backlog 999.6.
 - **v3.1** — Day-2 UX + hardening + docs (9 phases): `agmind doctor`
