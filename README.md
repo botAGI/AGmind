@@ -4,7 +4,7 @@
 
 # AGMind
 
-**Private RAG platform for NVIDIA DGX Spark — one command, production-ready**
+**Private RAG platform for NVIDIA DGX Spark — one command, production-style, validated on real hardware**
 
 [![Tests](https://github.com/botAGI/AGmind/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/botAGI/AGmind/actions/workflows/test.yml)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue)](LICENSE)
@@ -42,6 +42,15 @@ sudo bash install.sh
 
 **Built for:** DevOps engineers, ML teams, and IT departments running a
 private AI stack on DGX Spark hardware — no vendor lock-in, no cloud egress.
+
+### Proof of work
+
+Not slideware — validated on real DGX Spark (GB10) hardware:
+
+- 📋 **Release validation** — [`docs/release-validation/v3.2.0-spark-3eac.md`](docs/release-validation/v3.2.0-spark-3eac.md): full v3.2.0 deploy validated on a GB10 Spark.
+- 📊 **Benchmarks** — TTFT 183 ms · 23–24 tok/s single-stream · 50 tok/s @ 3 concurrent (gemma-4-26B, vLLM, fp8 KV); full table in the Benchmarks section below.
+- ▶️ **Reproducible demo** — [`scripts/demo/agmind-quickstart-sample.md`](scripts/demo/agmind-quickstart-sample.md): end-to-end quickstart transcript.
+- 🔒 **Security model** — [`docs/architecture/security-zones.md`](docs/architecture/security-zones.md): LAN-only zones backing the zero-egress claim (UFW / fail2ban / SSRF proxy).
 
 ### Why AGMind
 
@@ -780,6 +789,15 @@ sudo bash install.sh
 
 **Для кого:** DevOps-инженеры, ML-команды, IT-отделы, которым нужен
 приватный AI-стек на DGX Spark — без vendor lock-in и облачного egress.
+
+### Доказательство работы
+
+Не слайдвер — проверено на реальном железе DGX Spark (GB10):
+
+- 📋 **Валидация релиза** — [`docs/release-validation/v3.2.0-spark-3eac.md`](docs/release-validation/v3.2.0-spark-3eac.md): полный деплой v3.2.0 на GB10 Spark.
+- 📊 **Бенчмарки** — TTFT 183 ms · 23–24 tok/s single · 50 tok/s @ 3 параллельных (gemma-4-26B, vLLM, fp8 KV); полная таблица в секции Benchmarks.
+- ▶️ **Воспроизводимое демо** — [`scripts/demo/agmind-quickstart-sample.md`](scripts/demo/agmind-quickstart-sample.md): транскрипт quickstart.
+- 🔒 **Модель безопасности** — [`docs/architecture/security-zones.md`](docs/architecture/security-zones.md): LAN-only зоны под claim нулевого egress.
 
 ### Зачем AGMind
 
