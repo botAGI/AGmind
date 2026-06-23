@@ -6,6 +6,8 @@
 
 **Private RAG platform for NVIDIA DGX Spark — one command, production-style, validated on real hardware**
 
+🔗 Running AMD Strix Halo / x86_64 instead? → [**AGmind64**](https://github.com/botAGI/AGmind64)
+
 [![Tests](https://github.com/botAGI/AGmind/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/botAGI/AGmind/actions/workflows/test.yml)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue)](LICENSE)
 [![Bash 5+](https://img.shields.io/badge/bash-5%2B-green)](#)
