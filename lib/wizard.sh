@@ -157,7 +157,7 @@ _wizard_profile() {
             "ragflow"       "RAGFlow: RAGFlow + Elasticsearch + MySQL + MinIO" \
             "observability" "Мониторинг: Prometheus + Grafana + Loki + Portainer" \
             "security"      "Безопасность: Authelia + fail2ban / hardening" \
-            "agents"        "Агенты: LiteLLM + Crawl4AI + SearXNG + dbGPT + Open WebUI + Notebook + n8n" \
+            "agents"        "Агенты: LiteLLM + Authelia + Crawl4AI + SearXNG + dbGPT + Open WebUI + Notebook + n8n" \
             "full"          "Полный стек: vLLM + Weaviate + Docling + monitoring + agents + n8n" \
             "dev"           "Dev: Core + мониторинг (быстрая итерация)" \
             "custom"        "Custom: детальный выбор каждого компонента")
@@ -1804,6 +1804,9 @@ _wizard_optional_services() {
         _wizard_crawl4ai
         _wizard_ragflow
         _wizard_n8n
+        if [[ "${ENABLE_CRAWL4AI:-false}" == "true" ]]; then
+            ENABLE_AUTHELIA="true"
+        fi
         return 0
     fi
 
@@ -1852,6 +1855,13 @@ _wizard_optional_services() {
     # lets anyone on the network claim the admin account on a fresh
     # deploy. Nginx vhost agmind-rag.local proxies the local port for
     # normal LAN access without the direct-port race.
+    if [[ "${ENABLE_CRAWL4AI:-false}" == "true" ]]; then
+        # Crawl4AI exposes a URL-fetching REST API; always pair it with
+        # Authelia so agents/custom installs do not create an unauthenticated
+        # crawler route.
+        ENABLE_AUTHELIA="true"
+    fi
+
     if [[ "${ENABLE_RAGFLOW:-false}" == "true" ]]; then
         if wt_yesno "RAGFlow Direct Port Access" \
             "Открыть порт RAGFlow :9380 напрямую в LAN?\n\nВНИМАНИЕ: пока админ не зарегистрирован, любой в сети может занять админ-аккаунт.\nПо умолчанию доступ только через nginx-проксирование (agmind-rag.local) — безопаснее.\n\nОткрыть :9380 напрямую?"; then
@@ -1914,7 +1924,7 @@ _wizard_summary() {
     if [[ "${ENABLE_SEARXNG:-false}" == "true" ]]; then summary+="$(t wizard.summary.searxng)      agmind-search.local\n"; fi
     if [[ "${ENABLE_NOTEBOOK:-false}" == "true" ]]; then summary+="$(t wizard.summary.notebook) agmind-notebook.local\n"; fi
     if [[ "${ENABLE_DBGPT:-false}" == "true" ]]; then summary+="$(t wizard.summary.dbgpt)       agmind-dbgpt.local\n"; fi
-    if [[ "${ENABLE_CRAWL4AI:-false}" == "true" ]]; then summary+="$(t wizard.summary.crawl4ai)     agmind-crawl.local\n"; fi
+    if [[ "${ENABLE_CRAWL4AI:-false}" == "true" && "${ENABLE_AUTHELIA:-false}" == "true" ]]; then summary+="$(t wizard.summary.crawl4ai)     agmind-crawl.local\n"; fi
     if [[ "${ENABLE_N8N:-false}" == "true" ]]; then summary+="$(t wizard.summary.n8n)         agmind-n8n.local\n"; fi
     if [[ "${ENABLE_OPENWEBUI:-false}" == "true" ]]; then summary+="$(t wizard.summary.openwebui)   agmind-chat.local\n"; fi
     if [[ "${ENABLE_RAGFLOW:-false}" == "true" ]]; then summary+="$(t wizard.summary.ragflow)      $(t wizard.summary.ragflow_val)\n"; fi

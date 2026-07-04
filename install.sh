@@ -1091,11 +1091,11 @@ _save_credentials() {
             echo "=== DB-GPT (Аналитика данных) ==="
             echo "  URL:           http://${ip}:${EXPOSE_DBGPT_PORT:-5670}"
         fi
-        if [[ "${ENABLE_CRAWL4AI:-false}" == "true" ]]; then
+        if [[ "${ENABLE_CRAWL4AI:-false}" == "true" && "${ENABLE_AUTHELIA:-false}" == "true" ]]; then
             echo ""
             echo "=== Crawl4AI (Веб-краулер) ==="
-            echo "  API:           http://${ip}:${EXPOSE_CRAWL4AI_PORT:-11235}"
-            echo "  API Docs:      http://${ip}:${EXPOSE_CRAWL4AI_PORT:-11235}/docs"
+            echo "  API:           http://agmind-crawl.local"
+            echo "  API Docs:      http://agmind-crawl.local/docs"
             echo "  Dify:          HTTP Request tool → POST http://agmind-crawl4ai:11235/crawl"
         fi
         if [[ "${ENABLE_N8N:-false}" == "true" ]]; then
@@ -1505,7 +1505,7 @@ _show_final_summary() {
         if [[ "${ENABLE_SEARXNG:-false}"   == "true" ]]; then
             echo -e "  SearXNG            ${GREEN}http://agmind-search.local${NC}"
         fi
-        if [[ "${ENABLE_CRAWL4AI:-false}"  == "true" ]]; then
+        if [[ "${ENABLE_CRAWL4AI:-false}"  == "true" && "${ENABLE_AUTHELIA:-false}" == "true" ]]; then
             echo -e "  Crawl4AI           ${GREEN}http://agmind-crawl.local/docs${NC}"
         fi
         if [[ "${ENABLE_N8N:-false}"       == "true" ]]; then

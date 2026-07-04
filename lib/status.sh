@@ -128,7 +128,14 @@ _status_active_services() {
 _status_is_active_service() {
     local svc="$1"
     local active
-    active="$(_status_active_services)"
+    # _status_collect_rows calls this once per known service. Cache the active
+    # service set for that collection pass so status/watch remain fast enough
+    # for non-TTY CI checks instead of re-reading the env for every row.
+    if [[ -n "${_STATUS_ACTIVE_SERVICES_CACHE+x}" ]]; then
+        active="${_STATUS_ACTIVE_SERVICES_CACHE}"
+    else
+        active="$(_status_active_services)"
+    fi
     [[ " ${active} " == *" ${svc} "* ]]
 }
 
@@ -476,6 +483,11 @@ _status_collect_rows() {
     local all_svcs
     all_svcs="$(_status_all_known_services)"
 
+    # Compute the active profile set once per render. _status_docker_state calls
+    # _status_is_active_service for every known service, and recomputing this
+    # list per row makes `status --watch` miss its non-TTY timeout budget.
+    _STATUS_ACTIVE_SERVICES_CACHE="$(_status_active_services)"
+
     local svc group state url notes rc_count
 
     for svc in ${all_svcs}; do
@@ -483,6 +495,24 @@ _status_collect_rows() {
 
         # Determine STATE enum (Pattern 2 — 12 steps)
         state="$(_status_docker_state "$svc" 2>/dev/null || echo "exited")"
+
+        # Cheap terminal states do not need docker inspect/stats/curl detail probes.
+        # This keeps `agmind status --watch` non-TTY one-shot comfortably under
+        # CI timeouts while preserving the same visible state/URL rows.
+        case "$state" in
+            disabled)
+                _status_row_add "$svc" "$group" "$state" "$(_status_service_url "$svc")" "profile off" "0"
+                continue
+                ;;
+            done)
+                _status_row_add "$svc" "$group" "$state" "$(_status_service_url "$svc")" "init complete" "0"
+                continue
+                ;;
+            not-installed)
+                _status_row_add "$svc" "$group" "$state" "$(_status_service_url "$svc")" "not deployed" "0"
+                continue
+                ;;
+        esac
 
         # Restart count (used for NOTES and state override)
         rc_count="$(_status_restart_count "$svc" 2>/dev/null || echo 0)"
@@ -508,12 +538,6 @@ _status_collect_rows() {
         case "$state" in
             restarting)
                 notes="$(_status_notes_restart_loop "$rc_count")" ;;
-            disabled)
-                notes="profile off" ;;
-            done)
-                notes="init complete" ;;
-            not-installed)
-                notes="not deployed" ;;
         esac
 
         _status_row_add "$svc" "$group" "$state" "$url" "$notes" "$rc_count"
@@ -544,6 +568,8 @@ _status_collect_rows() {
         fi
         _status_row_add "peer-vllm" "llm" "$peer_state" "—" "peer spark" "0"
     fi
+
+    unset _STATUS_ACTIVE_SERVICES_CACHE
 }
 
 # ============================================================================

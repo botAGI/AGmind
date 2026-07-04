@@ -75,6 +75,7 @@ jobs:
           # rc=77 = SKIP (test self-disabled — missing optional dep, not-on-CI
           # resources like pipelines/ which is intentionally out of git, root, etc).
           # Same convention as tests/run_all.sh. Don't treat SKIP as FAIL.
+          export PATH="$PWD/tests/ci-bin:$PATH"
           errors=0 passed=0 skipped=0
           for t in tests/unit/*.sh tests/lint/*.sh; do
             [[ -e "$t" ]] || continue
@@ -111,6 +112,7 @@ jobs:
         run: |
           set +e
           # rc=77 = SKIP (same convention as the amd64 lane and tests/run_all.sh)
+          export PATH="$PWD/tests/ci-bin:$PATH"
           errors=0 passed=0 skipped=0
           for t in tests/unit/*.sh tests/lint/*.sh; do
             [[ -e "$t" ]] || continue
