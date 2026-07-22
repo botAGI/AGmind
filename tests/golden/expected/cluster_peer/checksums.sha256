@@ -6,6 +6,7 @@ d089cfc29495039466a6f511e46d8c5ad3356c54db104b66fce027e50c8f8262  ./monitoring/a
 7808aa53c580c44af0139196e03c3a583ada93c769ebed247442ff1472502006  ./monitoring/grafana/dashboards/alerts.json
 7b93622a80eaf6fcb7c517b52803aa25ab7e6ad984b434760e80ce9b09907e81  ./monitoring/grafana/dashboards/audit.json
 30d8a1901811087afc9c50987c43fb42053cb4beb5c0dd23a9e12afa12bf735d  ./monitoring/grafana/dashboards/containers.json
+6711ddbbb265091203460a9a7bad6b7380f953fdd96f3252310b5b127b7fb6cd  ./monitoring/grafana/dashboards/dspark-vllm.json
 6c307739fa9cc0df3330f7133a188ff2dce2c5fed999d3a2e8dd0984e347368b  ./monitoring/grafana/dashboards/gpu-worker.json
 1b52452321dc4047e7cf2ac57cfd23108b65a9d5605e53ffaf055c929c83b1ed  ./monitoring/grafana/dashboards/gpu.json
 1d9baee8552be889129b19cfbad402221e97fa78420239a04b865de03fafb7b0  ./monitoring/grafana/dashboards/logs.json
