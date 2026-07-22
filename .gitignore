@@ -26,6 +26,7 @@ plugins/
 pipelines/
 documentation/
 benchmarks/
+services/
 
 # Claude Code local settings (machine-specific)
 .claude/settings.local.json
@@ -62,3 +63,6 @@ agmind-handoff-fixed.zip
 tests/golden/.last-update.diff
 tests/golden/.tmp-*/
 .gsd/
+
+# Backup/handoff archives — never commit (no tracked .zip in repo)
+*.zip
